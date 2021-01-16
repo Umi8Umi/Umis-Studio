@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function(event) {
+/*document.addEventListener("DOMContentLoaded", function(event) {
 
 	const keyboardFrequencyMap = {
 	    '90': 261.625565300598634,  //Z - C
@@ -368,3 +368,4 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 }, false);
 
+*/

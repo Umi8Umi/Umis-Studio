@@ -4,6 +4,8 @@
     <title>Um!'s 𝄋+ud!0</title>
     <link rel="icon" href="logo.PNG">
     <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="audiosynth.js"></script>
+    <script src="audiosynth.view.js"></script>
 </head>
 <body>
 	<div id="page-container">
@@ -13,17 +15,35 @@
 			<img src="UmiStudio.PNG" id="title">
 			<p class="centered">* * *</p>
 		</div>
-		<div>
-			<button id="kick"></button>
-			<button id="hihat"></button>
-			<button id="snare"></button>
+
+		<div class="centered">
+			<button id="kick">kick</button>
+			<button id="hihat">hi-hat</button>
+			<button id="snare">snare</button>
 		</div>
-<!-- 		<div id="controls">
-			<button id="playButton">PLAY</button>
-			<button id="stopButton">PAUSE</button>
-		</div> -->
+
+		<div class="keyboard-options">
+			Sound
+			<select ID="sound">
+				<option value="0" selected>Keyboard</option>
+				<option value="1">Organ</option>
+			    <option value="2">Acoustic Guitar</option>
+			    <option value="3">EDM, bro!</option>
+			</select>
+			<div ID="keyboard" class="keyboard-holder"></div>
+			<div class="keyboard-options">
+			Range [C<span ID="OCTAVE_LOWER">3</span>-B<span ID="OCTAVE_UPPER">5</span>]
+			<input type="button" ID="-_OCTAVE" value="-" />
+			<input type="button" ID="+_OCTAVE" value="+" /><br />
+			<i>(Use left/right arrows to adjust with keyboard)</i>
+		</div>
 
 	</div>
-	<script src="main.js"></script>
+	
+	<script type="text/javascript">
+		var a = new AudioSynthView();
+		a.draw();
+	</script>
+	<!-- <script src="main.js"></script> -->
 </body>
 </html>
