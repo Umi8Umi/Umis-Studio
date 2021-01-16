@@ -1,0 +1,67 @@
+html, body {
+    margin: 0;
+    height: 100%;
+    background-color: #00455b;
+    font-family: "Lucida Console", Monaco, monospace;
+    color: #9ee8ff;
+}
+
+button{
+  /*width: 70px;
+  height: 70px;*/
+  height: auto;
+  width: auto;
+  background-color: #00455b;
+  border-color: #9ee8ff;
+  border-style: solid;
+  border-width: 5px;
+  border-radius: 5px;
+  color: #9ee8ff;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  font-family: "Lucida Console", Monaco, monospace;
+  font-weight: bold;
+}
+button:hover{
+  background-color: #FFC984;
+  cursor: pointer;
+}
+
+.centered{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+#title{
+  width: 50%;
+  margin-top: 25px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#page-container {
+  margin: auto;
+  grid-row-gap: 10px;
+  display: inline-grid;
+  grid-template-rows: auto;
+}
+
+#controls{
+  margin: auto;
+  display: block;
+  width: max-content;
+}
+
+/*old stuff is below here ----------------------------------------------------------*/
+
+/*
+#luckySings{
+  margin: auto;
+  display: block;
+  width: max-content;
+}*/
