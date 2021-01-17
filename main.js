@@ -1,118 +1,104 @@
 document.addEventListener("DOMContentLoaded", function(event) {
+	const record = document.getElementById('record');
+	const stop = document.getElementById('stop');
+	const soundClips = document.getElementById('sound-clips');
 
-	const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-	var compressor = audioCtx.createDynamicsCompressor();
-    compressor.threshold.setValueAtTime(-50, audioCtx.currentTime);
+	// disable stop button while not recording
+	stop.disabled = true;
 
-	function kick() {
-		var time = audioCtx.currentTime;
-	    const osc = audioCtx.createOscillator();
-	    osc.frequency.setValueAtTime(150, time);
-	    const gainNode = audioCtx.createGain();
-	    gainNode.gain.setValueAtTime(1, time);
-		osc.connect(gainNode).connect(audioCtx.destination);
+	//main block for doing the audio recording
+	if (navigator.mediaDevices.getUserMedia) {
+	  console.log('getUserMedia supported.');
 
-		osc.frequency.exponentialRampToValueAtTime(0.01, time + 0.5);
-		gainNode.gain.exponentialRampToValueAtTime(0.01, time + 0.5);
+	  const constraints = { audio: true };
+	  let chunks = [];
 
-		osc.start();
-		osc.stop(time + 0.5);
+	  let onSuccess = function(stream) {
+	    const mediaRecorder = new MediaRecorder(stream);
+
+	    record.onclick = function() {
+	      mediaRecorder.start();
+	      console.log(mediaRecorder.state);
+	      console.log("recorder started");
+	      record.style.background = "red";
+
+	      stop.disabled = false;
+	      record.disabled = true;
+	    }
+
+	    stop.onclick = function() {
+	      mediaRecorder.stop();
+	      console.log(mediaRecorder.state);
+	      console.log("recorder stopped");
+	      record.style.background = "";
+	      record.style.color = "";
+
+	      stop.disabled = true;
+	      record.disabled = false;
+	    }
+
+	    mediaRecorder.onstop = function(e) {
+	      console.log("data available after MediaRecorder.stop() called.");
+
+	      const clipName = prompt('Enter a name for your sound clip?','My unnamed clip');
+
+	      const clipContainer = document.createElement('div');
+	      const clipLabel = document.createElement('p');
+	      const audio = document.createElement('audio');
+	      const deleteButton = document.createElement('button');
+
+	      clipContainer.classList.add('clip');
+	      audio.setAttribute('controls', '');
+	      deleteButton.textContent = 'Delete';
+	      deleteButton.className = 'delete';
+
+	      if(clipName === null) {
+	        clipLabel.textContent = 'My unnamed clip';
+	      } else {
+	        clipLabel.textContent = clipName;
+	      }
+
+	      clipContainer.appendChild(audio);
+	      clipContainer.appendChild(clipLabel);
+	      clipContainer.appendChild(deleteButton);
+	      soundClips.appendChild(clipContainer);
+
+	      audio.controls = true;
+	      const blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
+	      chunks = [];
+	      const audioURL = window.URL.createObjectURL(blob);
+	      audio.src = audioURL;
+	      console.log("recorder stopped");
+
+	      deleteButton.onclick = function(e) {
+	        let evtTgt = e.target;
+	        evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
+	      }
+
+	      clipLabel.onclick = function() {
+	        const existingName = clipLabel.textContent;
+	        const newClipName = prompt('Enter a new name for your sound clip?');
+	        if(newClipName === null) {
+	          clipLabel.textContent = existingName;
+	        } else {
+	          clipLabel.textContent = newClipName;
+	        }
+	      }
+	    }
+
+	    mediaRecorder.ondataavailable = function(e) {
+	      chunks.push(e.data);
+	    }
+	  }
+
+	  let onError = function(err) {
+	    console.log('The following error occured: ' + err);
+	  }
+
+	  navigator.mediaDevices.getUserMedia(constraints).then(onSuccess, onError);
+
+	} else {
+	   console.log('getUserMedia not supported on your browser!');
 	}
-
-	const kickButton = document.getElementById('kick');
-	kickButton.addEventListener('click', function() {
-		kick();
-	}, false);
-
-	/////////////////////////////////////////////////////////////
-
-	function noiseBuffer() {
-		var bufferSize = audioCtx.sampleRate;
-		var buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-		var output = buffer.getChannelData(0);
-
-		for (var i = 0; i < bufferSize; i++) {
-			output[i] = Math.random() * 2 - 1;
-		}
-
-		return buffer;
-	};
-
-	function snare(time) {
-		var noise = audioCtx.createBufferSource();
-		noise.buffer = noiseBuffer();
-		var noiseFilter = audioCtx.createBiquadFilter();
-		noiseFilter.type = 'highpass';
-		noiseFilter.frequency.value = 1000;
-		noise.connect(noiseFilter);
-
-		const noiseEnvelope = audioCtx.createGain();
-		noiseFilter.connect(noiseEnvelope);
-		noiseEnvelope.connect(audioCtx.destination);
-
-		const osc = audioCtx.createOscillator();
-		osc.type = 'triangle';
-		const oscEnvelope = audioCtx.createGain();
-		osc.connect(oscEnvelope).connect(audioCtx.destination);
-
-		noiseEnvelope.gain.setValueAtTime(1, time);
-		noiseEnvelope.gain.exponentialRampToValueAtTime(0.01, time + 0.2);
-		noise.start(time)
-
-		osc.frequency.setValueAtTime(100, time);
-		oscEnvelope.gain.setValueAtTime(0.7, time);
-		oscEnvelope.gain.exponentialRampToValueAtTime(0.01, time + 0.1);
-		osc.start(time)
-
-		osc.stop(time + 0.2);
-		noise.stop(time + 0.2);
-	};
-
-	const snareButton = document.getElementById('snare');
-	snareButton.addEventListener('click', function() {
-		var now = audioCtx.currentTime;
-		snare(now);
-	}, false);
-
-	///////////////////////////////////////////////////
-
-	const hatCtx = new (window.AudioContext || window.webkitAudioContext)();
-	hatCtx.ratios = [1, 1.3420, 1.2312, 1.6532, 1.9523, 2.1523];
-	hatCtx.tone = 130.81;
-	hatCtx.decay = 0.5;
-	hatCtx.volume = 1;
-
-	function hihat(time){
-
-		console.log("i am in the hihat function!!!")
-		const oscEnvelope = hatCtx.createGain();
-		var bandpass = hatCtx.createBiquadFilter();
-		bandpass.type = 'bandpass';
-		bandpass.frequency.value = 20000;
-		bandpass.Q.value = 0.2;
-		highpass = hatCtx.createBiquadFilter();
-		highpass.type = 'highpass';
-		highpass.frequency.value = 5000;
-		bandpass.connect(highpass).connect(oscEnvelope).connect(hatCtx.destination);
-
-		hatCtx.ratios.forEach((ratio) =>{
-			var osc = hatCtx.createOscillator();
-			osc.type = "square";
-			osc.frequency.value = hatCtx.tone * ratio;
-			osc.connect(bandpass);
-			osc.start(time);
-			osc.stop(time + hatCtx.decay);
-		});
-		oscEnvelope.gain.setValueAtTime(0.00001 * hatCtx.volume, time);
-		oscEnvelope.gain.exponentialRampToValueAtTime(1 * hatCtx.volume, time + 0.067 * hatCtx.decay);
-		oscEnvelope.gain.exponentialRampToValueAtTime(0.3 * hatCtx.volume, time + 0.1 * hatCtx.decay);
-		oscEnvelope.gain.exponentialRampToValueAtTime(0.00001 * hatCtx.volume, time + hatCtx.decay);
-	}
-
-	const hatButton = document.getElementById('hihat');
-	hatButton.addEventListener('click', function() {
-		var now = audioCtx.currentTime;
-		hihat(now);
-	}, false);
 
 }, false);

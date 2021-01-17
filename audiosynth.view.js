@@ -323,7 +323,7 @@ function AudioSynthView() {
 	
 		if(keyboard[e.keyCode]) {
 			if(visualKeyboard[keyboard[e.keyCode]]) {
-				visualKeyboard[keyboard[e.keyCode]].style.backgroundColor = '#ff0000';
+				visualKeyboard[keyboard[e.keyCode]].style.backgroundColor = '#D1FF95';
 				visualKeyboard[keyboard[e.keyCode]].style.marginTop = '5px';
 				visualKeyboard[keyboard[e.keyCode]].style.boxShadow = 'none';
 			}

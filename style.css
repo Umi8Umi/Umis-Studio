@@ -1,30 +1,31 @@
 html, body {
-/*    margin: 0;*/
-/*    height: 100%;*/
-    /*min-width: 1140px;*/
     background-color: #00455b;
-    font-family: "Lucida Console", Monaco, monospace;
+/*    font-family: "Lucida Console", Monaco, monospace;*/
+    font-family: Helvetica;
     color: #9ee8ff;
 }
 
 button{
   height: auto;
   width: auto;
-  background-color: #00455b;
-  border-color: #9ee8ff;
-  border-style: solid;
-  border-width: 5px;
-  border-radius: 5px;
-  color: #9ee8ff;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-left: 20px;
-  padding-right: 20px;
-  font-family: "Lucida Console", Monaco, monospace;
+  background-color: #D1FF95;
+ /* color: #FFC020;*/
+  color: #000000;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-family: Helvetica;
+/*  font-family: "Lucida Console", Monaco, monospace;*/
   font-weight: bold;
+  border: 1px solid rgba(32,32,32,0.2);
+  border-radius: 5px;
+  cursor:pointer;
+  box-shadow: 0px 5px 1px rgba(32,32,32,0.2);
+  text-shadow: 0px -1px 1px rgba(255,255,255,0.5);
 }
 button:hover{
-  background-color: #FFC984;
+  background-color: #85A957;
   cursor: pointer;
 }
 
@@ -51,7 +52,31 @@ button:hover{
   margin: auto;
   grid-row-gap: 10px;
   display: inline-grid;
-  grid-template-rows: auto;
+  /*grid-template-rows: auto;*/
+  grid-template-columns: auto auto;
+}
+
+.clip{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+.clip > p{
+  margin-left: 100px;
+  margin-right: 100px;
+  margin-top: 10px;
+}
+
+#sound-clips{
+  margin-top: 25px;
+}
+
+.delete{
+  background-color: #FFC984;
+  color: #FF8F00;
+  border: none;
+  padding: 3px;
 }
 
 /*#controls{
@@ -86,14 +111,14 @@ button:hover{
 }
 
 .black {
-  background-color: rgb(32,32,32);
+  background-color: #FFB8DF;
   color: #ffffff;
   z-index: 1;
   text-shadow: 0px -1px 1px rgba(255,255,255,0.5);
 }
 
 .white {
-  background-color: #ffffff;
+  background-color: #F1DBFF;
   color: rgb(32,32,32);
   z-index: 0;
   text-shadow: 0px 1px 1px rgba(32,32,32,0.5);
@@ -109,11 +134,17 @@ button:hover{
 }
 
 .keyboard-holder {
-  margin: 30px auto;
+  margin: 30px 15px;
+  /*margin: 30px auto;*/
   height: 200px;
   position:relative;
   user-select:none; 
   -webkit-user-select:none;
   -moz-user-select:none;
   -o-user-select:none; 
+}
+
+p{
+  margin-top: 3px;
+  font-style: italic;
 }

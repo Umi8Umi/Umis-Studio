@@ -8,36 +8,46 @@
     <script src="audiosynth.view.js"></script>
 </head>
 <body>
+	<div>
+		<!-- <h1>Um!'s 𝄋+ud30</h1> -->
+		<img src="UmiStudio.PNG" id="title">
+		<p class="centered">* * *</p>
+	</div>
+
 	<div id="page-container">
+		<div>
+			<div class="centered">
+				<button id="kick">kick</button>
+				<button id="hihat">hi-hat</button>
+				<button id="snare">snare</button>
+			</div>
+
+			<!-- all credits to Keith William Horwood
+			https://keithwhor.github.io/audiosynth/ -->
+			<div class="keyboard-options">
+				Sound
+				<select ID="sound">
+					<option value="0" selected>Keyboard</option>
+					<option value="1">Organ</option>
+				    <option value="2">Acoustic Guitar</option>
+				    <option value="3">EDM, bro!</option>
+				</select>
+				<div ID="keyboard" class="keyboard-holder"></div>
+				<div class="keyboard-options">
+					Range [C<span ID="OCTAVE_LOWER">3</span>-B<span ID="OCTAVE_UPPER">5</span>]
+					<input type="button" ID="-_OCTAVE" value="-" />
+					<input type="button" ID="+_OCTAVE" value="+" /><br />
+					<p>(Use left/right arrows to adjust with keyboard)</p>
+				</div>
+			</div>
+		</div>
 
 		<div>
-			<!-- <h1>Um!'s 𝄋+ud30</h1> -->
-			<img src="UmiStudio.PNG" id="title">
-			<p class="centered">* * *</p>
-		</div>
-
-		<div class="centered">
-			<button id="kick">kick</button>
-			<button id="hihat">hi-hat</button>
-			<button id="snare">snare</button>
-		</div>
-
-		<!-- all credits to Keith William Horwood
-		https://keithwhor.github.io/audiosynth/ -->
-		<div class="keyboard-options">
-			Sound
-			<select ID="sound">
-				<option value="0" selected>Keyboard</option>
-				<option value="1">Organ</option>
-			    <option value="2">Acoustic Guitar</option>
-			    <option value="3">EDM, bro!</option>
-			</select>
-			<div ID="keyboard" class="keyboard-holder"></div>
-			<div class="keyboard-options">
-			Range [C<span ID="OCTAVE_LOWER">3</span>-B<span ID="OCTAVE_UPPER">5</span>]
-			<input type="button" ID="-_OCTAVE" value="-" />
-			<input type="button" ID="+_OCTAVE" value="+" /><br />
-			<i>(Use left/right arrows to adjust with keyboard)</i>
+			<div class="centered">
+				<button id="record">RECORD</button>
+				<button id="stop">STOP</button>
+			</div>
+			<div id="sound-clips"></div>
 		</div>
 
 	</div>
@@ -46,6 +56,7 @@
 		var a = new AudioSynthView();
 		a.draw();
 	</script>
+	<script src="drums.js"></script>
 	<script src="main.js"></script>
 </body>
 </html>
