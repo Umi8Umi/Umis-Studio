@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	const kick_img = document.getElementById('kick');
 	const snare_img = document.getElementById('snare');
 	const hihat_img = document.getElementById('hihat');
+	const mergeBtn = document.getElementById('merge');
 	var clicked = false;
 	var chunks = [];
 	var dest = audioCtx.createMediaStreamDestination();
@@ -26,7 +27,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	       drumsRecBtn.style.color = "";
            mediaRecorder.stop();
            e.target.textContent = "Record Drums";
-           /*e.target.disabled = true;*/
          }
 	}, false);
 
@@ -37,8 +37,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     mediaRecorder.onstop = function(evt) {
 		// Make blob out of our blobs, and open it.
-		//var blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
-		//document.querySelector("audio").src = URL.createObjectURL(blob);
 
 		const clipName = prompt('Name your soundbite:','New Recording');
 
@@ -49,6 +47,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 		clipContainer.classList.add('clip');
 		audio.setAttribute('controls', '');
+		audio.name = "soundBite"
 		deleteButton.textContent = 'Delete';
 		deleteButton.className = 'delete';
 
@@ -62,6 +61,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		clipContainer.appendChild(clipLabel);
 		clipContainer.appendChild(deleteButton);
 		soundClips.appendChild(clipContainer);
+		mergeBtn.hidden = false;
 
 		audio.controls = true;
 		const blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
@@ -73,6 +73,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		deleteButton.onclick = function(e) {
 			var evtTgt = e.target;
 			evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
+			if(soundClips.childElementCount <= 0)
+				mergeBtn.hidden = true;
 		}
 
 		clipLabel.onclick = function() {
@@ -145,7 +147,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		noiseEnvelope.connect(dest);
 
 		const osc = audioCtx.createOscillator();
-		/*osc.connect(dest);*/
 		osc.type = 'triangle';
 		const oscEnvelope = audioCtx.createGain();
 		osc.connect(oscEnvelope).connect(audioCtx.destination);
@@ -202,7 +203,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		ratios.forEach(function(ratio) {
 
 		        var osc = audioCtx.createOscillator();
-		        /*osc.connect(dest);*/
 		        osc.type = "square";
 		        osc.frequency.value = fundamental * ratio;
 		        osc.connect(bandpass);

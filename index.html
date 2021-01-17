@@ -15,8 +15,8 @@
 	</div>
 
 	<div id="page-container">
-		<div>
-			<div class="centered">
+		<div id="center_grid">
+			<div id="recording">
 				<div id="drumSet">
 					<button id="kick" class="drumKit"><img src="kick.PNG" class="drumKit"></button>
 					<button id="hihat" class="drumKit"><img src="hihat.PNG" class="drumKit"></button>
@@ -50,12 +50,13 @@
 			</div>
 		</div>
 
-		<div>
+		<div class="centered">
 <!-- 			<div class="centered">
 				<button id="record">RECORD</button>
 				<button id="stop">STOP</button>
 			</div> -->
 			<div id="sound-clips"></div>
+			<button id="merge" hidden="true">merge</button>
 		</div>
 
 	</div>
@@ -66,5 +67,6 @@
 	</script>
 	<script src="drums.js"></script>
 	<script src="main.js"></script>
+	<script src="mergeAudio.js"></script>
 </body>
 </html>

@@ -40,6 +40,12 @@ button:hover{
   margin: 5px;
 }
 
+#center_grid{
+  display: inline-grid;
+  grid-template-columns: auto;
+  justify-items: center;
+}
+
 #title{
   width: 40%;
   margin-top: 25px;
@@ -54,7 +60,14 @@ button:hover{
   grid-row-gap: 10px;
   display: inline-grid;
   /*grid-template-rows: auto;*/
+  /*grid-template-columns: auto auto;*/
+  grid-template-columns: min-content auto;
+}
+
+#recording{
+  display: inline-grid;
   grid-template-columns: auto auto;
+  grid-column-gap: 200px;
 }
 
 .clip{
@@ -89,7 +102,7 @@ button:hover{
 #drumSet{
   display: grid;
   grid-template-columns: auto auto auto;
-  margin-right: 200px;
+/*  margin-right: 200px;*/
   grid-row-gap: 10px;
 }
 
@@ -165,11 +178,10 @@ button:hover{
   -o-user-select:none; 
 }
 
-#keyboard{
+/*#keyboard{
     width: max-content;
-    max-width: 700px;
 }
-
+*/
 p{
   margin-top: 3px;
   font-style: italic;

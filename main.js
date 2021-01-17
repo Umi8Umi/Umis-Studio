@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function(event) {
 	const record = document.getElementById('record');
 	const soundClips = document.getElementById('sound-clips');
+	const mergeBtn = document.getElementById('merge');
 	var clicked = false;
 
 	// ----------- audio recording stuff ------------------------------------------------
@@ -25,18 +26,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	      	   record.style.color = "";
 	           mediaRecorder.stop();
 	           e.target.textContent = "Mic Record";
-	           /*e.target.disabled = true;*/
 	         }
 		}, false);
-
-/*	    stop.onclick = function() {
-	      mediaRecorder.stop();
-	      console.log(mediaRecorder.state);
-	      console.log("recorder stopped");
-	      record.style.background = "";
-	      record.style.color = "";
-	      record.disabled = false;
-	    }*/
 
 	    mediaRecorder.onstop = function(e) {
 	      console.log("data available after MediaRecorder.stop() called.");
@@ -50,6 +41,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 	      clipContainer.classList.add('clip');
 	      audio.setAttribute('controls', '');
+	      audio.name = "soundBite"
 	      deleteButton.textContent = 'Delete';
 	      deleteButton.className = 'delete';
 
@@ -63,6 +55,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	      clipContainer.appendChild(clipLabel);
 	      clipContainer.appendChild(deleteButton);
 	      soundClips.appendChild(clipContainer);
+	      mergeBtn.hidden = false;
 
 	      audio.controls = true;
 	      const blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
@@ -74,6 +67,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	      deleteButton.onclick = function(e) {
 	        var evtTgt = e.target;
 	        evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
+	        if(soundClips.childElementCount <= 0)
+				mergeBtn.hidden = true;
 	      }
 
 	      clipLabel.onclick = function() {

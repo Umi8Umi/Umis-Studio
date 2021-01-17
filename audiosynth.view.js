@@ -163,7 +163,9 @@ function AudioSynthView() {
 			}
 		}
 
-		visualKeyboard.style.width = iWhite * 33 + 'px';
+		//visualKeyboard.style.width = iWhite * 40 + 'px';
+		visualKeyboard.style.width = "860px";
+		visualKeyboard.style.marginRight = "0px";
 
 		window.addEventListener(evtListener[1], function() { n = keysPressed.length; while(n--) { fnRemoveKeyBinding({keyCode:keysPressed[n]}); } });
 	
