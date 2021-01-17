@@ -1,10 +1,7 @@
 document.addEventListener("DOMContentLoaded", function(event) {
 	const record = document.getElementById('record');
-	const stop = document.getElementById('stop');
 	const soundClips = document.getElementById('sound-clips');
-
-	// ----------- hide stop button -----------------------------------------------------
-	stop.style.display = "none";
+	var clicked = false;
 
 	// ----------- audio recording stuff ------------------------------------------------
 	if (navigator.mediaDevices.getUserMedia) {
@@ -16,15 +13,19 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	  function onSuccess(stream) {
 	    const mediaRecorder = new MediaRecorder(stream);
 
-	    record.onclick = function() {
-	      mediaRecorder.start();
-	      console.log(mediaRecorder.state);
-	      console.log("recorder started");
-	      record.style.background = "red";
-
-	      stop.style.display = "block";
-	      record.disabled = true;
-	    }
+	    record.addEventListener('click', function(e) {
+			if (!clicked) {
+			   record.style.background = "#FF00A6";
+	           mediaRecorder.start();
+	           e.target.textContent = "STOP";
+	           clicked = true;
+	         } else {
+	           record.style.background = "";
+	      	   record.style.color = "";
+	           mediaRecorder.stop();
+	           e.target.disabled = true;
+	         }
+		}, false);
 
 	    stop.onclick = function() {
 	      mediaRecorder.stop();
@@ -32,16 +33,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	      console.log("recorder stopped");
 	      record.style.background = "";
 	      record.style.color = "";
-
-	      //stop.disabled = true;
-	      stop.style.display = "none";
 	      record.disabled = false;
 	    }
 
 	    mediaRecorder.onstop = function(e) {
 	      console.log("data available after MediaRecorder.stop() called.");
 
-	      const clipName = prompt('Enter a name for your sound clip?','My unnamed clip');
+	      const clipName = prompt('Name your soundbite:','New Recording');
 
 	      const clipContainer = document.createElement('div');
 	      const clipLabel = document.createElement('p');
@@ -54,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	      deleteButton.className = 'delete';
 
 	      if(clipName === null) {
-	        clipLabel.textContent = 'My unnamed clip';
+	        clipLabel.textContent = 'New Recording';
 	      } else {
 	        clipLabel.textContent = clipName;
 	      }
@@ -72,13 +70,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	      console.log("recorder stopped");
 
 	      deleteButton.onclick = function(e) {
-	        let evtTgt = e.target;
+	        var evtTgt = e.target;
 	        evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
 	      }
 
 	      clipLabel.onclick = function() {
 	        const existingName = clipLabel.textContent;
-	        const newClipName = prompt('Enter a new name for your sound clip?');
+	        const newClipName = prompt('Rename your soundbite:');
 	        if(newClipName === null) {
 	          clipLabel.textContent = existingName;
 	        } else {

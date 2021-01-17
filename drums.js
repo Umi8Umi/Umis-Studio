@@ -1,5 +1,86 @@
 document.addEventListener("DOMContentLoaded", function(event) {
 
+	const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+	var compressor = audioCtx.createDynamicsCompressor();
+    compressor.threshold.setValueAtTime(-50, audioCtx.currentTime);
+
+    const soundClips = document.getElementById('sound-clips');
+	const drumsRecBtn = document.getElementById('drums_rec');
+	var clicked = false;
+	var chunks = [];
+	var dest = audioCtx.createMediaStreamDestination();
+	var mediaRecorder = new MediaRecorder(dest.stream);
+
+	drumsRecBtn.addEventListener('click', function(e) {
+		if (!clicked) {
+		   drumsRecBtn.style.background = "#FF00A6";
+           mediaRecorder.start();
+           e.target.textContent = "STOP";
+           clicked = true;
+         } else {
+           drumsRecBtn.style.background = "";
+	       drumsRecBtn.style.color = "";
+           mediaRecorder.stop();
+           e.target.disabled = true;
+         }
+	}, false);
+
+	mediaRecorder.ondataavailable = function(evt) {
+       // push each chunk (blobs) in an array
+       chunks.push(evt.data);
+    };
+
+    mediaRecorder.onstop = function(evt) {
+		// Make blob out of our blobs, and open it.
+		//var blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
+		//document.querySelector("audio").src = URL.createObjectURL(blob);
+
+		const clipName = prompt('Name your soundbite:','New Recording');
+
+		const clipContainer = document.createElement('div');
+		const clipLabel = document.createElement('p');
+		const audio = document.createElement('audio');
+		const deleteButton = document.createElement('button');
+
+		clipContainer.classList.add('clip');
+		audio.setAttribute('controls', '');
+		deleteButton.textContent = 'Delete';
+		deleteButton.className = 'delete';
+
+		if(clipName === null) {
+			clipLabel.textContent = 'New Recording';
+		} else {
+			clipLabel.textContent = clipName;
+		}
+
+		clipContainer.appendChild(audio);
+		clipContainer.appendChild(clipLabel);
+		clipContainer.appendChild(deleteButton);
+		soundClips.appendChild(clipContainer);
+
+		audio.controls = true;
+		const blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
+		chunks = [];
+		const audioURL = window.URL.createObjectURL(blob);
+		audio.src = audioURL;
+		console.log("recorder stopped");
+
+		deleteButton.onclick = function(e) {
+			var evtTgt = e.target;
+			evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
+		}
+
+		clipLabel.onclick = function() {
+			const existingName = clipLabel.textContent;
+			const newClipName = prompt('Rename your soundbite:');
+			if(newClipName === null) {
+			  clipLabel.textContent = existingName;
+			} else {
+			  clipLabel.textContent = newClipName;
+			}
+		}
+    };
+
 	/////////////////////////////////////////////////////////////////
 	//
 	// all credits to Chris Lowis for the kick and snare sound
@@ -8,17 +89,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	/////////////////////////////////////////////////////////////////
 
 	//----------------- kick stuff ------------------------------------------------
-	const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-	var compressor = audioCtx.createDynamicsCompressor();
-    compressor.threshold.setValueAtTime(-50, audioCtx.currentTime);
-
 	function kick() {
 		var time = audioCtx.currentTime;
 	    const osc = audioCtx.createOscillator();
+	    /*osc.connect(dest);*/
 	    osc.frequency.setValueAtTime(150, time);
 	    const gainNode = audioCtx.createGain();
 	    gainNode.gain.setValueAtTime(1, time);
 		osc.connect(gainNode).connect(audioCtx.destination);
+		gainNode.connect(dest);
 
 		osc.frequency.exponentialRampToValueAtTime(0.01, time + 0.5);
 		gainNode.gain.exponentialRampToValueAtTime(0.01, time + 0.5);
@@ -56,8 +135,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		const noiseEnvelope = audioCtx.createGain();
 		noiseFilter.connect(noiseEnvelope);
 		noiseEnvelope.connect(audioCtx.destination);
+		noiseEnvelope.connect(dest);
 
 		const osc = audioCtx.createOscillator();
+		/*osc.connect(dest);*/
 		osc.type = 'triangle';
 		const oscEnvelope = audioCtx.createGain();
 		osc.connect(oscEnvelope).connect(audioCtx.destination);
@@ -92,11 +173,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	var mixGain = audioCtx.createGain();
 	var filterGain = audioCtx.createGain();
 	mixGain.connect(audioCtx.destination);
+	mixGain.connect(dest);
 	mixGain.gain.value = 0;
 	filterGain.gain.value = 0;
 
 	function hihat(){
-		var gainOsc4 = audioCtx.createGain();
+		var gainOsc = audioCtx.createGain();
 		var fundamental = 40;
 		var ratios = [2, 3, 4.16, 5.43, 6.79, 8.21];
 
@@ -110,26 +192,27 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 		ratios.forEach(function(ratio) {
 
-		        var osc4 = audioCtx.createOscillator();
-		        osc4.type = "square";
-		        osc4.frequency.value = fundamental * ratio;
-		        osc4.connect(bandpass);
+		        var osc = audioCtx.createOscillator();
+		        /*osc.connect(dest);*/
+		        osc.type = "square";
+		        osc.frequency.value = fundamental * ratio;
+		        osc.connect(bandpass);
 
-		        osc4.start(audioCtx.currentTime);
-		        osc4.stop(audioCtx.currentTime + 0.05);
+		        osc.start(audioCtx.currentTime);
+		        osc.stop(audioCtx.currentTime + 0.05);
 		        
 		    });
 
 
-		gainOsc4.gain.setValueAtTime(1, audioCtx.currentTime);
-		gainOsc4.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+		gainOsc.gain.setValueAtTime(1, audioCtx.currentTime);
+		gainOsc.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
 
-	    gainOsc4.gain.setValueAtTime(1, audioCtx.currentTime);
-	    gainOsc4.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+	    gainOsc.gain.setValueAtTime(1, audioCtx.currentTime);
+	    gainOsc.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
 	    
 	    bandpass.connect(highpass);
-	    highpass.connect(gainOsc4);
-        gainOsc4.connect(mixGain);
+	    highpass.connect(gainOsc);
+        gainOsc.connect(mixGain);
     
 	    mixGain.gain.value = 1;
 	}
