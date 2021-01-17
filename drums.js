@@ -6,6 +6,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     const soundClips = document.getElementById('sound-clips');
 	const drumsRecBtn = document.getElementById('drums_rec');
+	const kick_img = document.getElementById('kick');
+	const snare_img = document.getElementById('snare');
+	const hihat_img = document.getElementById('hihat');
 	var clicked = false;
 	var chunks = [];
 	var dest = audioCtx.createMediaStreamDestination();
@@ -18,10 +21,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
            e.target.textContent = "STOP";
            clicked = true;
          } else {
+           clicked = false;
            drumsRecBtn.style.background = "";
 	       drumsRecBtn.style.color = "";
            mediaRecorder.stop();
-           e.target.disabled = true;
+           e.target.textContent = "Record Drums";
+           /*e.target.disabled = true;*/
          }
 	}, false);
 
@@ -108,6 +113,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 	const kickButton = document.getElementById('kick');
 	kickButton.addEventListener('click', function() {
+		kick_img.firstChild.src = "kick_hit.PNG";
+		setTimeout(function(){ kick_img.firstChild.src = "kick.PNG"; }, 500);
 		kick();
 	}, false);
 
@@ -158,6 +165,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 	const snareButton = document.getElementById('snare');
 	snareButton.addEventListener('click', function() {
+		snare_img.firstChild.src = "snare_hit.PNG";
+		setTimeout(function(){ snare_img.firstChild.src = "snare.PNG"; }, 500);
 		var now = audioCtx.currentTime;
 		snare(now);
 	}, false);
@@ -219,6 +228,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 	const hatButton = document.getElementById('hihat');
 	hatButton.addEventListener('click', function() {
+		hihat_img.firstChild.src = "hihat_hit.PNG";
+		setTimeout(function(){ hihat_img.firstChild.src = "hihat.PNG"; }, 500);
 		hihat();
 	}, false);
 	

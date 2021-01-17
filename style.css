@@ -41,7 +41,7 @@ button:hover{
 }
 
 #title{
-  width: 50%;
+  width: 40%;
   margin-top: 25px;
   display: block;
   margin-left: auto;
@@ -64,8 +64,8 @@ button:hover{
   justify-content: center;
 }
 .clip > p{
-  margin-left: 100px;
-  margin-right: 100px;
+  margin-left: 50px;
+  margin-right: 50px;
   margin-top: 10px;
 }
 
@@ -78,6 +78,25 @@ button:hover{
   color: #FF8F00;
   border: none;
   padding: 3px;
+}
+
+.drumKit{
+  width: 100px;
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+}
+#drumSet{
+  display: grid;
+  grid-template-columns: auto auto auto;
+  margin-right: 200px;
+  grid-row-gap: 10px;
+}
+
+#microphone{
+  display: grid;
+  grid-template-columns: auto;
+  grid-row-gap: 10px;
 }
 
 /*#controls{
@@ -126,16 +145,17 @@ button:hover{
 }
 
 .keyboard-options {
-  margin: 30px auto;
+  /*margin: 30px auto;*/
+  margin: 15px;
   width: auto;
   text-align: center;
   font-size: 12px;
   font-weight: 200;
-  padding:10px;
+  padding:0px;
 }
 
 .keyboard-holder {
-  margin: 30px 15px;
+  margin: 15px 15px;
   /*margin: 30px auto;*/
   height: 200px;
   position:relative;
@@ -143,6 +163,11 @@ button:hover{
   -webkit-user-select:none;
   -moz-user-select:none;
   -o-user-select:none; 
+}
+
+#keyboard{
+    width: max-content;
+    max-width: 700px;
 }
 
 p{
@@ -159,6 +184,7 @@ p{
 }
 
 #sound{
+  margin-top: 50px;
   background-color: #D1FF95;
   border-color: #D1FF95;
   border: 1px solid rgba(32,32,32,0.2);

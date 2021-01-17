@@ -20,21 +20,23 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	           e.target.textContent = "STOP";
 	           clicked = true;
 	         } else {
+	           clicked = false;
 	           record.style.background = "";
 	      	   record.style.color = "";
 	           mediaRecorder.stop();
-	           e.target.disabled = true;
+	           e.target.textContent = "Mic Record";
+	           /*e.target.disabled = true;*/
 	         }
 		}, false);
 
-	    stop.onclick = function() {
+/*	    stop.onclick = function() {
 	      mediaRecorder.stop();
 	      console.log(mediaRecorder.state);
 	      console.log("recorder stopped");
 	      record.style.background = "";
 	      record.style.color = "";
 	      record.disabled = false;
-	    }
+	    }*/
 
 	    mediaRecorder.onstop = function(e) {
 	      console.log("data available after MediaRecorder.stop() called.");
