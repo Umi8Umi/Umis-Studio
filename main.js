@@ -3,17 +3,17 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	const stop = document.getElementById('stop');
 	const soundClips = document.getElementById('sound-clips');
 
-	// disable stop button while not recording
-	stop.disabled = true;
+	// ----------- hide stop button -----------------------------------------------------
+	stop.style.display = "none";
 
-	//main block for doing the audio recording
+	// ----------- audio recording stuff ------------------------------------------------
 	if (navigator.mediaDevices.getUserMedia) {
 	  console.log('getUserMedia supported.');
 
 	  const constraints = { audio: true };
-	  let chunks = [];
+	  var chunks = [];
 
-	  let onSuccess = function(stream) {
+	  function onSuccess(stream) {
 	    const mediaRecorder = new MediaRecorder(stream);
 
 	    record.onclick = function() {
@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	      console.log("recorder started");
 	      record.style.background = "red";
 
-	      stop.disabled = false;
+	      stop.style.display = "block";
 	      record.disabled = true;
 	    }
 
@@ -33,7 +33,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	      record.style.background = "";
 	      record.style.color = "";
 
-	      stop.disabled = true;
+	      //stop.disabled = true;
+	      stop.style.display = "none";
 	      record.disabled = false;
 	    }
 
@@ -91,7 +92,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	    }
 	  }
 
-	  let onError = function(err) {
+	  function onError(err) {
 	    console.log('The following error occured: ' + err);
 	  }
 

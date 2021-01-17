@@ -3,6 +3,7 @@ html, body {
 /*    font-family: "Lucida Console", Monaco, monospace;*/
     font-family: Helvetica;
     color: #9ee8ff;
+    text-shadow: 0px -1px 1px rgba(255,255,255,0.5);
 }
 
 button{
@@ -147,4 +148,20 @@ button:hover{
 p{
   margin-top: 3px;
   font-style: italic;
+}
+
+#-_OCTAVE, #\+_OCTAVE{
+  background-color: #D1FF95;
+  border-color: #D1FF95;
+  border: 1px solid rgba(32,32,32,0.2);
+  border-radius: 5px;
+  cursor:pointer;
+}
+
+#sound{
+  background-color: #D1FF95;
+  border-color: #D1FF95;
+  border: 1px solid rgba(32,32,32,0.2);
+  border-radius: 5px;
+  cursor:pointer;
 }
