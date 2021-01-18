@@ -27,6 +27,19 @@ button:hover{
   cursor: pointer;
 }
 
+#band-animation img{
+  width: 300px;
+  display: none;
+  margin: auto;
+}
+#band-animation img:first-child {
+  display: block;
+}
+
+#theBand{
+  width: 300px;
+}
+
 .centered{
   display: flex;
   flex-wrap: wrap;
@@ -64,7 +77,7 @@ button:hover{
   padding-left: 25px;
   display: inline-grid;
   grid-template-columns: min-content;
-  grid-template-rows: min-content min-content;
+  grid-template-rows: min-content min-content auto;
 }
 
 #merge{
