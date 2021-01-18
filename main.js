@@ -55,7 +55,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	      clipContainer.appendChild(clipLabel);
 	      clipContainer.appendChild(deleteButton);
 	      soundClips.appendChild(clipContainer);
-	      mergeBtn.hidden = false;
+	      if(soundClips.childElementCount > 1)
+				mergeBtn.hidden = false;
 
 	      audio.controls = true;
 	      const blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
@@ -67,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	      deleteButton.onclick = function(e) {
 	        var evtTgt = e.target;
 	        evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
-	        if(soundClips.childElementCount <= 0)
+	        if(soundClips.childElementCount <= 1)
 				mergeBtn.hidden = true;
 	      }
 

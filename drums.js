@@ -61,11 +61,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		clipContainer.appendChild(clipLabel);
 		clipContainer.appendChild(deleteButton);
 		soundClips.appendChild(clipContainer);
-		mergeBtn.hidden = false;
+		if(soundClips.childElementCount > 1)
+				mergeBtn.hidden = false;
 
 		audio.controls = true;
 		const blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
 		chunks = [];
+		console.log("the blob THIS IS THE BLOB: ");
+		console.log(blob);
 		const audioURL = window.URL.createObjectURL(blob);
 		audio.src = audioURL;
 		console.log("recorder stopped");
@@ -73,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		deleteButton.onclick = function(e) {
 			var evtTgt = e.target;
 			evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
-			if(soundClips.childElementCount <= 0)
+			if(soundClips.childElementCount <= 1)
 				mergeBtn.hidden = true;
 		}
 
